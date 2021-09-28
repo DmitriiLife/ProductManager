@@ -3,33 +3,36 @@ package ru.netology;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ProductRepositoryTest {
 
+    //private Product product = new Product();
     private ProductRepository repository = new ProductRepository();
     private ProductManager manager = new ProductManager(repository);
 
-    private Product first = new Book(1, "hamlet", 100, "shakespeare");
-    private Product second = new Book(2, "harry potter", 80, "joan rowling");
-    private Product third = new Book(3, "idiot", 75, "dostoevsky");
-    private Product fourth = new Smartphone(4, "S10", 550, "samsung");
-    private Product fifth = new Smartphone(5, "3310", 100, "nokia");
-    private Product sixth = new Smartphone(6, "S20", 600, "samsung");
-    private Product seventh = new Book(7, "instruction", 200, "samsung");
-
+    private Product first = new Book(1, "hamlet", 1, "shakespeare");
+    private Product second = new Book(2, "harry potter", 1, "joan rowling");
+    private Product third = new Book(3, "idiot", 1, "dostoevsky");
+    private Product fourth = new Smartphone(4, "S10", 1, "samsung");
+    private Product fifth = new Smartphone(5, "3310", 1, "nokia");
+    private Product sixth = new Smartphone(6, "s20", 1, "samsung");
+    private Product seventh = new Book(7, "instruction", 1, "samsung");
+    private Product eighth = new Smartphone(8, "a90", 1, "samsung");
 
     @Test
-    public void saveBook() {
+    public void addBook() {
         manager.add(third);
-        Product[] expected = {new Book(3, "idiot", 75, "dostoevsky")};
+        Product[] expected = {new Book(3, "idiot", 1, "dostoevsky")};
         Product[] actual = repository.findAll();
         assertArrayEquals(expected, actual);
     }
 
+
     @Test
     public void saveSmartphone() {
         manager.add(sixth);
-        Product[] expected = {new Smartphone(6, "S20", 600, "samsung")};
+        Product[] expected = {new Smartphone(6, "s20", 1, "samsung")};
         Product[] actual = repository.findAll();
         assertArrayEquals(expected, actual);
     }
@@ -37,7 +40,7 @@ class ProductRepositoryTest {
     @Test
     void searchByAuthor() {
         manager.add(third);
-        Product[] expected = {new Book(3, "idiot", 75, "dostoevsky")};
+        Product[] expected = {new Book(3, "idiot", 1, "dostoevsky")};
         Product[] actual = manager.searchBy("dostoevsky");
         assertArrayEquals(expected, actual);
     }
@@ -45,23 +48,15 @@ class ProductRepositoryTest {
     @Test
     void searchByName() {
         manager.add(first);
-        Product[] expected = {new Book(1, "hamlet", 100, "shakespeare")};
+        Product[] expected = {new Book(1, "hamlet", 1, "shakespeare")};
         Product[] actual = manager.searchBy("hamlet");
-        assertArrayEquals(expected, actual);
-    }
-
-    @Test
-    void searchByBookName() {
-        manager.add(second);
-        Product[] expected = {new Book(2, "harry potter", 80, "joan rowling")};
-        Product[] actual = manager.searchBy("harry potter");
         assertArrayEquals(expected, actual);
     }
 
     @Test
     void searchByManufacturer() {
         manager.add(fifth);
-        Product[] expected = {new Smartphone(5, "3310", 100, "nokia")};
+        Product[] expected = {new Smartphone(5, "3310", 1, "nokia")};
         Product[] actual = manager.searchBy("nokia");
         assertArrayEquals(expected, actual);
     }
@@ -69,38 +64,57 @@ class ProductRepositoryTest {
     @Test
     void searchBySmartphoneName() {
         manager.add(fifth);
-        Product[] expected = {new Smartphone(5, "3310", 100, "nokia")};
+        Product[] expected = {new Smartphone(5, "3310", 1, "nokia")};
         Product[] actual = manager.searchBy("3310");
         assertArrayEquals(expected, actual);
     }
+
+    @Test
+    void removeById() {
+        manager.add(eighth);
+        manager.add(sixth);
+        manager.add(fourth);
+        manager.removeById(6);
+        Product[] expected = {new Smartphone(4, "S10", 1, "samsung"),
+                new Smartphone(8, "a90", 1, "samsung")};
+        Product[] actual = repository.findAll();
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void useEqualsProduct() {
+        Product first = new Book(1, "hamlet", 1, "shakespeare");
+        Product fourth = new Book(1, "hamlet", 1, "shakespeare");
+        assertEquals(first, fourth);
+    }
+
+    @Test
+    public void useEqualsBook() {
+        Product first = new Book(1, "hamlet", 1, "shakespeare");
+        Product fourth = new Book(1, "hamlet", 1, "shakespeare");
+        assertEquals(first, fourth);
+    }
+
+    @Test
+    public void useEqualsSmartphone() {
+        Product fourth = new Smartphone(4, "S10", 1, "samsung");
+        Product sixth = new Smartphone(0, "0", 0, "samsung");
+        assertEquals(sixth, fourth);
+    }
+
+    @Test
+    public void useOver() {
+        Product product = new Product();
+        product.toString();
+    }
+
+    @Test
+    public void objectCheck() {
+        Product product = new Product();
+        boolean expected = false;
+        boolean actual = manager.matches(product, "samsung");
+
+        assertEquals(expected, actual);
+
+    }
 }
-//    @Test
-//    void searchMoreThanOne() {
-//        manager.add(seventh);
-//        manager.add(sixth);
-//        manager.add(fourth);
-//        Product[] expected = {new Smartphone(4, "S10", 550, "samsung"),
-//                new Smartphone(6, "S20", 600, "samsung"),
-//                new Book(7, "a52", 200, "samsung")};
-//        Product[] actual = manager.searchBy("samsung");
-//        assertArrayEquals(expected, actual);
-//    }
-//        @Test
-//        void removeById () {
-//            manager.add(seventh);
-//            manager.add(sixth);
-//            manager.add(fourth);
-//            manager.remove(6);
-//            Product[] expected = {new Smartphone(4, "S10", 550, "samsung"),
-//                    new Smartphone(7, "a52", 2800, "samsung")};
-//            Product[] actual = repository.findAll();
-//            assertArrayEquals(expected, actual);
-//        }
-//
-//    @Test
-//    public void useEquals() {
-//        manager.add(seventh);
-//        Product[] expected = {new Smartphone(7, "a52", 2800, "Samsung")};
-//        Product[] actual = {new Smartphone(7, "a52", 2800, "Samsung")};
-//        assertArrayEquals(expected, actual);
-//    }

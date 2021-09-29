@@ -1,4 +1,4 @@
-package ru.netology;
+package ru.netology.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,6 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-
 public class Book extends Product {
 
     private String author;

@@ -1,4 +1,9 @@
-package ru.netology;
+package ru.netology.manager;
+
+import ru.netology.domain.Book;
+import ru.netology.domain.Product;
+import ru.netology.domain.Smartphone;
+import ru.netology.repositiry.ProductRepository;
 
 public class ProductManager {
 
@@ -14,7 +19,7 @@ public class ProductManager {
 
     public void removeById(int id) {
         repository.removeById(id);
-}
+    }
 
     public Product[] searchBy(String text) {
         Product[] result = new Product[0];

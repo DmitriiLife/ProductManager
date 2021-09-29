@@ -1,13 +1,17 @@
 package ru.netology;
 
 import org.junit.jupiter.api.Test;
+import ru.netology.domain.Book;
+import ru.netology.domain.Product;
+import ru.netology.domain.Smartphone;
+import ru.netology.manager.ProductManager;
+import ru.netology.repositiry.ProductRepository;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ProductRepositoryTest {
 
-    //private Product product = new Product();
     private ProductRepository repository = new ProductRepository();
     private ProductManager manager = new ProductManager(repository);
 
@@ -102,11 +106,11 @@ class ProductRepositoryTest {
         assertEquals(sixth, fourth);
     }
 
-    @Test
-    public void useOver() {
-        Product product = new Product();
-        product.toString();
-    }
+//    @Test
+//    public void useOver() {
+//        Product product = new Product();
+//        product.toString();
+//    }
 
     @Test
     public void objectCheck() {
@@ -116,5 +120,27 @@ class ProductRepositoryTest {
 
         assertEquals(expected, actual);
 
+    }
+
+    @Test
+    public void searchMoreThanOne() {
+        manager.add(fourth);
+        manager.add(sixth);
+        manager.add(eighth);
+        Product[] expected = {new Smartphone(4, "S10", 1, "samsung"),
+                new Smartphone(6, "s20", 1, "samsung"),
+                new Smartphone(8, "a90", 1, "samsung")};
+        Product[] actual = manager.searchBy("samsung");
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void searchByNonExistName() {
+        manager.add(fourth);
+        manager.add(sixth);
+        manager.add(eighth);
+        Product[] expected = {};
+        Product[] actual = manager.searchBy("ivanov");
+        assertArrayEquals(expected, actual);
     }
 }
